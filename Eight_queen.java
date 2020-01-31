@@ -17,16 +17,17 @@ public class Eight_queen {
 		resetBoard();
 	}
 	public static void main(String[] args) {
-		int n=13;
+		int n=8;
 		Eight_queen eq= new Eight_queen(n);
 		System.out.println(possibilities.size());
 		eq.putNQueensOnBoard(n);
-		System.out.println("pos size:"+possibilities.size());
-	
+		
 		//eq.printBoard();
 		eq.ruleOutRotatedSolution();
-		System.out.println("distinct pos size:"+distinct_pos.size());
-		//eq.printDistinctSolutions();
+		System.out.println("All Solutions:"+possibilities.size());
+		
+		System.out.println("Distinct Solutions:"+distinct_pos.size());
+	eq.printDistinctSolutions();
 	}
 	public void resetBoard() {
 		for(int i=0;i<board_dimension;i++)
@@ -168,40 +169,30 @@ public class Eight_queen {
 		Set<String> p = new HashSet<String>();
 		
 		for(LinkedList<Integer[]> l: possibilities) {
-//			System.out.println("hey:"+possibilities.size());
-//			System.out.println("hey:"+l.size());
 			String s="";//vertical
 			int[] arr=new int[board_dimension];
 			for(int i=0;i<l.size()-1;i++) {
 				int dif_v = Math.abs(l.get(i)[1]-l.get(i+1)[1]);
 				s+=dif_v;
-				//System.out.println("hey:"+l.get(i)[1]+","+l.get(i+1)[1]);
 				//get horiziontal
 				arr[l.get(i)[1]]=l.get(i)[0];
 				if(i+1==l.size()-1) {
 					arr[l.get(i+1)[1]]=l.get(i+1)[0];
-				}
-				
+				}	
 			}
 			//get horizontal diff
 			String sh="";//horizontal
 			for(int i=0;i<arr.length-1;i++) {
 				int dif_h = Math.abs(arr[i]-arr[i+1]);
 				sh+=dif_h;
-				//System.out.println("sh hey:"+arr[i]+","+arr[i+1]);
 			}
 			String reverse_h="";
 			for(int i = sh.length() - 1; i >= 0; i--) {
 				reverse_h = reverse_h + sh. charAt(i); }
-			
 			String reverse="";
 			for(int i = s. length() - 1; i >= 0; i--) {
 				reverse = reverse + s. charAt(i); }
-		//	printPos(l);
-//			System.out.println(s+","+reverse+","+sh+","+reverse_h);
-			//check -2-3-4-5 2345 5432 upside down and leftside right 
-			
-			
+			//check -2-3-4-5 2345 5432 upside down and leftside right 			
 			if(p.contains(s)||p.contains(reverse)
 					||p.contains(sh)||p.contains(reverse_h)) {
 				
@@ -226,12 +217,10 @@ public class Eight_queen {
 		x=queen_pos.getLast()[0];
 		y=queen_pos.getLast()[1];
 		}
-		//-1 original state, 0 crossed out, 1=queen
-		//same y same x, x-1 y-1 x+1 y+1  
 		for(int i=0;i<board_dimension;i++) {//i=x
 			for(int j =0;j<board_dimension;j++) {//j=y
 				if(i!=x || j!=y) {
-					if(((i==x) || (j==y)						||
+					if(((i==x) || (j==y)||
 							(j-y==i-x)||
 							(i-x==y-j))) {
 						if(board[i][j]==1) {//queen
